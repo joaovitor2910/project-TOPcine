@@ -1,47 +1,40 @@
 # 🎬 TopCine
 
-TopCine é uma aplicação web responsiva que exibe uma seleção de filmes em destaque. O projeto tem como objetivo praticar e demonstrar habilidades em desenvolvimento frontend moderno, especialmente com foco em interfaces limpas, responsivas e funcionais.
+TopCine é uma aplicação web responsiva que consome dados da API do [The Movie Database (TMDb)](https://www.themoviedb.org/) para exibir uma lista de filmes e séries populares. O projeto tem como objetivo demonstrar habilidades em React, consumo de APIs REST e construção de interfaces modernas com Styled Components.
 
-## 🚀 Link do Projeto
+## 🚀 Acesse o Projeto
 
-👉 [Acesse o TopCine aqui](https://project-topcine.vercel.app)
-
-## 📸 Preview
-
-![TopCine Screenshot](link-da-sua-imagem-aqui-caso-tenha)
+👉 [project-topcine.vercel.app](https://project-topcine.vercel.app)
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **React** – Biblioteca para construção da interface
-- **Vite** – Ferramenta de bundling e desenvolvimento rápido
-- **CSS Modules / Tailwind (ou o que você usou)** – Estilização da aplicação
-- **Vercel** – Deploy e hospedagem
+- **React** – Biblioteca para criação de interfaces reativas
+- **Styled Components** – Estilização com CSS-in-JS
+- **Axios** – Cliente HTTP para requisições à API
+- **JavaScript (ES6+)** – Linguagem base do projeto
+- **Vercel** – Plataforma de deploy
 
 ## 📚 Funcionalidades
 
-- Interface responsiva e adaptável a diferentes tamanhos de tela
-- Listagem de filmes com pôster, título e informações básicas
-- Navegação simples e intuitiva
+- Listagem de **filmes e séries populares**
+- Informações básicas como título, imagem e avaliação
+- Interface responsiva e visual moderno
+- Consumo da **API TMDb** com requisições assíncronas usando Axios
 
-## ✅ Possíveis Melhorias Futuras
-
-- Implementar busca por título
-- Criar página com detalhes completos do filme
-- Adicionar sistema de favoritos
-- Consumir API real (ex: The Movie Database - TMDB)
-- Melhorar performance e acessibilidade
-
-## 📦 Como Executar Localmente
+## 🔧 Como Rodar Localmente
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/topcine.git
+git clone https://github.com/joaovitor2910/topcine.git
 
 # Acesse a pasta do projeto
 cd topcine
 
 # Instale as dependências
 npm install
+
+# Crie um arquivo .env com sua chave da API do TMDb
+VITE_API_KEY=SUA_CHAVE_DA_API
 
 # Inicie o servidor de desenvolvimento
 npm run dev
