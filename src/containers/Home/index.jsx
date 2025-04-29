@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
-import Slider from "../../components/Slider";
+import { SliderMovies, Slider, SliderSeries } from "../../components/Slider";
 import { getImages } from "../../services/utils/getImages";
-import { Background, Container, ContainerButton, Info, Poster } from "./styles";
-import { useState, useEffect } from "react";
+import { Background, Container, ContainerButton, ContainerSpin, Info, Poster } from "./styles";
+import { useState, useEffect, useContext } from "react";
 import {
   getMovies,
   getPopularSeries,
@@ -12,6 +12,8 @@ import {
   getTopPeople,
   getTopSeries,
 } from "../../services/getData";
+import { UserContext } from "../../contexts/UserContext";
+import { Spinner } from "../../components/Modal/styles";
 
 function Home() {
   const [movie, setMovie] = useState();
@@ -21,8 +23,13 @@ function Home() {
   const [popularSeries, setPopularSeries] = useState();
   const [topPeople, setTopPeople] = useState();
   const navigate = useNavigate();
+  const {setType, loading, setLoading} = useContext(UserContext)
 
   useEffect(() => {
+    setLoading(true)
+    const loadingComponent = async () => 
+    await new Promise((res) => setTimeout(res, 1000)).then(() => {
+
     async function getAllData() {
       Promise.all([
         getMovies(),
@@ -41,9 +48,20 @@ function Home() {
         .catch(error => error);
     }
     getAllData();
+  }).finally(() => setLoading(false))
+  loadingComponent()
   }, []);
 
   return (
+    <>
+    {loading ? 
+    (
+      <ContainerSpin>
+      <Spinner />
+      </ContainerSpin>
+    )
+    :
+    (
     <>
       {movie && (
         <Background $img={getImages(movie.backdrop_path)}>
@@ -55,10 +73,16 @@ function Home() {
               <h1>{movie.title}</h1>
               <p>{movie.overview}</p>
               <ContainerButton>
-                <Button red onClick={() => navigate(`/detalhes/${movie.id}`)}>
+                <Button red onClick={() => {navigate(`/detalhes/${movie.id}`)
+                setType('movie')
+              }
+              
+              }>
                   Assista agora
                 </Button>
-                <Button onClick={() => setShowModal(true)} red={false}>
+                <Button onClick={() => {setShowModal(true)
+                  setType('movie')
+                }} red={false}>
                   Assista o trailer
                 </Button>
               </ContainerButton>
@@ -69,14 +93,19 @@ function Home() {
           </Container>
         </Background>
       )}
-      {topMovies && <Slider info={topMovies} title={"Top Filmes"} />}
-      {topSeries && <Slider info={topSeries} title={"Top Séries"} />}
+      {topMovies && <SliderMovies info={topMovies} title={"Top Filmes"} />}
+      {topSeries && <SliderSeries info={topSeries} title={"Top Séries"} />}
       {popularSeries && (
-        <Slider info={popularSeries} title={"Séries Populares"} />
+        <SliderSeries info={popularSeries} title={"Séries Populares"} />
       )}
       {topPeople && <Slider info={topPeople} title={"Artistas Populares"} />}
+
     </>
+    )
+  }
+  </>
   );
 }
+
 
 export default Home;

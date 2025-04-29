@@ -1,4 +1,14 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`
 
 export const Background = styled.div`
   height: 100vh;
@@ -38,4 +48,14 @@ export const CloseButton = styled.button`
   font-weight: 700;
   position: fixed;
   top: 10px;
+`
+
+export const Spinner = styled.div`
+  width: 50px;
+  height: 50px;
+  border: 4px solid #000;
+  border-top: 4px solid #f96d00;
+  border-radius: 50%;
+
+  animation: ${spin} 1s linear infinite;
 `

@@ -80,11 +80,3 @@ export const ContainerButton = styled.div`
   gap: 20px;
   margin-top: 20px;
 `
-
-export const ContainerSpin = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`

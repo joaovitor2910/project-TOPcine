@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
+  getById,
   getCredits,
-  getMovieById,
-  getMovieVideos,
   getSimilar,
+  getTrailers,
 } from "../../services/getData";
 import { useParams } from "react-router-dom";
 import { Background, Container, ContainerMovies, Cover, Info } from "./styles";
 import { getImages } from "../../services/utils/getImages";
 import SpanGenres from "../../components/SpanGenres";
 import Credits from "../../components/Credits";
-import Slider from "../../components/Slider";
+import { UserContext } from "../../contexts/UserContext";
+import { SliderSimilar } from "../../components/Slider";
+import { ContainerSpin } from "../Home/styles";
+import { Spinner } from "../../components/Modal/styles";
 
 function Detalhes() {
   const { id } = useParams();
@@ -18,14 +21,19 @@ function Detalhes() {
   const [credits, setCredits] = useState();
   const [similar, setSimilar] = useState();
   const [videos, setVideos] = useState();
+  const { type, loading, setLoading, setType } = useContext(UserContext)
 
+  
   useEffect(() => {
-    async function getAllData() {
+    setLoading(true)
+    const loadingComponent = async () => 
+    await new Promise((res) => setTimeout(res, 400)).then(() => {
+      async function getAllData() {
       Promise.all([
-        getMovieById(id),
-        getMovieVideos(id),
-        getCredits(id),
-        getSimilar(id),
+        getById(type, id),
+        getTrailers(type, id),
+        getCredits(type, id),
+        getSimilar(type, id),
       ])
         .then(([movie, videos, credits, similar]) => {
           setMovie(movie);
@@ -35,11 +43,23 @@ function Detalhes() {
         })
         .catch(error => error);
     }
-    getAllData();
-  }, []);
+  getAllData();
+  }).finally(() => setLoading(false))
+  loadingComponent()
+  window.scrollTo(0, 0)
+  }, [id]);
 
   return (
     <>
+    {loading ? 
+        (
+          <ContainerSpin>
+          <Spinner />
+          </ContainerSpin>
+        )
+        :
+        (
+        <>
       {movie && (
         <>
           <Background $image={getImages(movie.backdrop_path)} />
@@ -70,9 +90,14 @@ function Detalhes() {
                 </div>
               ))}
           </ContainerMovies>
-          {similar && <Slider info={similar} title={"Filmes Similares"} />}
-        </>
-      )}
+          {similar && <SliderSimilar info={similar} title={"Similares"} />}
+          </>
+        )
+      }
+      </>
+        
+    )
+  }
     </>
   );
 }
