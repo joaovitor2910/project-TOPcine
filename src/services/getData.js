@@ -106,7 +106,6 @@ export async function getSimilar(type, movieId) {
   const {
     data: { results }
   } = await api.get(`/${type}/${movieId}/similar`)
-  console.log(results)
   return results
 }
 
